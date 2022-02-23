@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace IceCoffee.WeChatSDK.MP.Models.TagModels
 {
-    public class TagIdList
+    public class TagIdList : ResponseModelBase
     {
         /// <summary>
         /// //被置上的标签Id列表

@@ -1,12 +1,11 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.Json.Serialization;
 
 namespace IceCoffee.WeChatSDK.MP.Models.BasicApiModels
 {
-    public class Resp_JsApiTicket : ResponseModelBase
+    public class JsApiTicket : ResponseModelBase
     {
         /// <summary>
         /// 获取到的凭证

@@ -1,12 +1,11 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.Json.Serialization;
 
 namespace IceCoffee.WeChatSDK.MP.Models.BasicApiModels
 {
-    public class Resp_AccessToken : ResponseModelBase
+    public class AccessTokenWrapper : ResponseModelBase
     {
         [JsonPropertyName("access_token")]
         public string AccessToken { get; set; }

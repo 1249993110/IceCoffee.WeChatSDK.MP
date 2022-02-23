@@ -6,7 +6,7 @@ using System.Text;
 
 namespace IceCoffee.WeChatSDK.MP
 {
-    public static class WeChatHelper
+    internal static class Helper
     {
         /// <summary>
         /// 进行sha1加密
@@ -16,7 +16,8 @@ namespace IceCoffee.WeChatSDK.MP
         public static string Sha1Encrypt(string input)
         {
             var pwBytes = Encoding.UTF8.GetBytes(input);
-            var hash = SHA1.Create().ComputeHash(pwBytes);
+            using var sha1 = SHA1.Create();
+            var hash = sha1.ComputeHash(pwBytes);
             var hex = new StringBuilder();
 
             foreach (var b in hash)

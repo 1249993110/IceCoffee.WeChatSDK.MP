@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace IceCoffee.WeChatSDK.MP.Models.TagModels
 {
     public class Tag
     {
         /// <summary>
-        /// 标签名
+        /// 此标签下粉丝数
         /// </summary>
-        [JsonPropertyName("name")]
-        public string Name { get; set; }
+        [JsonPropertyName("count")]
+        public int Count { get; set; }
 
         /// <summary>
         /// 标签Id
@@ -20,9 +17,9 @@ namespace IceCoffee.WeChatSDK.MP.Models.TagModels
         public int Id { get; set; }
 
         /// <summary>
-        /// 此标签下粉丝数
+        /// 标签名
         /// </summary>
-        [JsonPropertyName("count")]
-        public int Count { get; set; }
+        [JsonPropertyName("name")]
+        public string Name { get; set; }
     }
 }

@@ -7,12 +7,12 @@ namespace IceCoffee.WeChatSDK.MP
     /// <summary>
     /// Exported constants
     /// </summary>
-    public static class ExportedConstants
+    public struct ExportedConstants
     {
         /// <summary>
         /// 授权类型
         /// </summary>
-        public static class GrantType
+        public struct GrantType
         {
             /// <summary>
             /// client_credential
@@ -23,7 +23,7 @@ namespace IceCoffee.WeChatSDK.MP
         /// <summary>
         /// Cache
         /// </summary>
-        public static class Cache
+        public struct Cache
         {
             /// <summary>
             /// 令牌缓存KEY
@@ -34,7 +34,7 @@ namespace IceCoffee.WeChatSDK.MP
         /// <summary>
         /// 微信事件
         /// </summary>
-        public static class Event
+        public struct Event
         {
             /// <summary>
             /// 关注事件
@@ -71,7 +71,7 @@ namespace IceCoffee.WeChatSDK.MP
         /// <summary>
         /// 消息类型
         /// </summary>
-        public static class MsgType
+        public struct MsgType
         {
             /// <summary>
             /// 事件
@@ -117,7 +117,7 @@ namespace IceCoffee.WeChatSDK.MP
         /// <summary>
         /// 消息类型
         /// </summary>
-        public static class ButtonType
+        public struct ButtonType
         {
             public const string Click = "click";
             public const string View = "view";

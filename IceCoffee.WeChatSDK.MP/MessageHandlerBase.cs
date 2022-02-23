@@ -1,23 +1,16 @@
-﻿using IceCoffee.WeChatSDK.MP.Messages;
+﻿using IceCoffee.Common.Extensions;
+using IceCoffee.WeChatSDK.MP.Messages;
 using IceCoffee.WeChatSDK.MP.Messages.CommonMessages;
+using IceCoffee.WeChatSDK.MP.Messages.EventMessages;
 using IceCoffee.WeChatSDK.MP.Options;
 using IceCoffee.WeChatSDK.MP.Serialization;
-using IceCoffee.Common.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using IceCoffee.WeChatSDK.MP.Messages.EventMessages;
-using System.Xml;
-using System.Xml.Linq;
 using System.Threading;
-using System.Diagnostics;
-using IceCoffee.WeChatSDK.MP.Messages.Primitives;
+using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace IceCoffee.WeChatSDK.MP
 {
@@ -41,7 +34,6 @@ namespace IceCoffee.WeChatSDK.MP
             this.logger = logger;
         }
 
-
         public virtual async Task RunAsync(HttpContext httpContext, WeChatMpOptions weChatMpOptions)
         {
             _httpContext = httpContext;
@@ -50,20 +42,20 @@ namespace IceCoffee.WeChatSDK.MP
             try
             {
                 #region 验证签名
-                
+
                 if (_httpContext.Request.Method == "GET")
                 {
                     await OnGetAsync();
                     return;
                 }
 
-                #endregion
+                #endregion 验证签名
 
                 #region 接收微信消息
 
                 await OnPostAsync();
 
-                #endregion
+                #endregion 接收微信消息
             }
             catch (Exception ex)
             {
@@ -81,9 +73,9 @@ namespace IceCoffee.WeChatSDK.MP
             var request = _httpContext.Request;
             var queryCollection = request.Query;
             var response = _httpContext.Response;
-            
+
             // 验证签名
-            if (WeChatHelper.CheckSignature(
+            if (Helper.CheckSignature(
                 queryCollection["signature"],
                 queryCollection["timestamp"],
                 queryCollection["nonce"],
@@ -103,12 +95,12 @@ namespace IceCoffee.WeChatSDK.MP
         /// </summary>
         /// <returns></returns>
         protected virtual async Task OnPostAsync()
-        {           
+        {
             XDocument xDocument = await XDocument.LoadAsync(_httpContext.Request.Body, LoadOptions.None, CancellationToken.None);
-            
+
             var rootElement = xDocument.Root;
-            
-            if(rootElement == null)
+
+            if (rootElement == null)
             {
                 throw new Exception("rootElement 为空");
             }
@@ -116,7 +108,7 @@ namespace IceCoffee.WeChatSDK.MP
             string msgType = rootElement.Element("MsgType").Value;
 
             MessageBase responseMessage = null;
-            
+
             // 事件消息
             if (msgType == ExportedConstants.MsgType.Event)
             {
@@ -151,7 +143,6 @@ namespace IceCoffee.WeChatSDK.MP
                 var requestMessage = MessageSerializer<TextMessage>.Deserialize(xDocument);
                 _messageBase = requestMessage;
                 responseMessage = await OnTextRequestAsync(requestMessage);
-
             }
             else
             {
@@ -174,20 +165,30 @@ namespace IceCoffee.WeChatSDK.MP
             {
                 await OnDefaultResponseAsync(_messageBase);
             }
-            else 
+            else
             {
                 if (_serializeDelegate == null)
                 {
                     throw new Exception("必须调用 CreateResponseMessage 创建响应消息");
                 }
 
-                var response = _httpContext.Response;
-                response.StatusCode = StatusCodes.Status200OK;
-                response.ContentType = "text/xml";
+                try
+                {
+                    var response = _httpContext.Response;
+                    response.StatusCode = StatusCodes.Status200OK;
+                    response.ContentType = "text/xml";
 
-                string result = _serializeDelegate.Invoke(responseMessage);
-                _serializeDelegate = null;
-                await _httpContext.Response.WriteAsync(result);
+                    string result = _serializeDelegate.Invoke(responseMessage);
+                    await _httpContext.Response.WriteAsync(result);
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+                finally
+                {
+                    _serializeDelegate = null;
+                }
             }
         }
 

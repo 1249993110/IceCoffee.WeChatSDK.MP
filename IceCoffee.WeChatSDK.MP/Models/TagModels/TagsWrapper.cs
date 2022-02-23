@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace IceCoffee.WeChatSDK.MP.Models.TagModels
 {
-    public class TagsWrapper
+    public class TagsWrapper : ResponseModelBase
     {
         [JsonPropertyName("tags")]
         public Tag[] Tags { get; set; }
