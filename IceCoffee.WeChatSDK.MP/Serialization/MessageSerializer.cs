@@ -1,5 +1,5 @@
 ﻿using IceCoffee.WeChatSDK.MP.Messages;
-using IceCoffee.WeChatSDK.MP.Messages.Primitives;
+
 using System;
 using System.Collections;
 using System.Collections.Concurrent;
@@ -21,7 +21,7 @@ namespace IceCoffee.WeChatSDK.MP.Serialization
     /// <summary>
     /// MessageSerializer
     /// </summary>
-    public static class MessageSerializer<TMessage> where TMessage : class, MessageBase
+    public static class MessageSerializer<TMessage> where TMessage : MessageBase
     {
         private static readonly XmlSerializer _xmlSerializer;
 

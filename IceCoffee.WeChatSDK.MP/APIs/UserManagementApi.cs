@@ -25,28 +25,32 @@ namespace IceCoffee.WeChatSDK.MP.APIs
         {
         }
 
-        public Task<ResponseModelBase> BatchTaggingAsync(BatchTagging batchTagging)
+        public async Task<ResponseModelBase> BatchTaggingAsync(BatchTagging batchTagging)
         {
-            throw new NotImplementedException();
+            string accessToken = (await GetAccessTokenAsync()).AccessToken;
+            string url = "/cgi-bin/tags/members/batchtagging?access_token=" + accessToken;
+            return await base.PostAsync<ResponseModelBase>(url, batchTagging);
         }
 
-        public Task<ResponseModelBase> BatchUnTaggingAsync(BatchTagging batchTagging)
+        public async Task<ResponseModelBase> BatchUnTaggingAsync(BatchTagging batchTagging)
         {
-            throw new NotImplementedException();
+            string accessToken = (await GetAccessTokenAsync()).AccessToken;
+            string url = "/cgi-bin/tags/members/batchuntagging?access_token=" + accessToken;
+            return await base.PostAsync<ResponseModelBase>(url, batchTagging);
         }
 
-        public async Task<TagWrapper> CreateTagAsync(Tag tagEntry)
+        public async Task<TagWrapper> CreateTagAsync(TagWrapper tagWrapper)
         {
             string accessToken = (await GetAccessTokenAsync()).AccessToken;
             string url = "/cgi-bin/tags/create?access_token=" + accessToken;
-            return await base.PostAsync<TagWrapper>(url, tagEntry);
+            return await base.PostAsync<TagWrapper>(url, tagWrapper);
         }
 
-        public async Task<ResponseModelBase> DeleteTagAsync(Tag tagEntry)
+        public async Task<ResponseModelBase> DeleteTagAsync(TagWrapper tagWrapper)
         {
             string accessToken = (await GetAccessTokenAsync()).AccessToken;
             string url = "/cgi-bin/tags/delete?access_token=" + accessToken;
-            return await base.PostAsync<ResponseModelBase>(url, tagEntry);
+            return await base.PostAsync<ResponseModelBase>(url, tagWrapper);
         }
 
         public async Task<TagsWrapper> GetTagsAsync()
@@ -63,11 +67,11 @@ namespace IceCoffee.WeChatSDK.MP.APIs
             return await base.PostAsync<TagIdList>(url, new { openid = openId });
         }
 
-        public Task<ResponseModelBase> UpdateTagAsync(Tag tagEntry)
+        public async Task<ResponseModelBase> UpdateTagAsync(TagWrapper tagWrapper)
         {
             string accessToken = (await GetAccessTokenAsync()).AccessToken;
-            string url = "/cgi-bin/tags/getidlist?access_token=" + accessToken;
-            return await base.PostAsync<TagIdList>(url, new { openid = openId });
+            string url = "/cgi-bin/tags/update?access_token=" + accessToken;
+            return await base.PostAsync<TagIdList>(url, tagWrapper);
         }
     }
 }

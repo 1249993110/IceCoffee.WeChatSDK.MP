@@ -28,14 +28,14 @@ namespace IceCoffee.WeChatSDK.MP.APIs
         /// </summary>
         /// <param name="tagEntry"></param>
         /// <returns></returns>
-        Task<Tag> CreateTagAsync(Tag tagEntry);
+        Task<TagWrapper> CreateTagAsync(TagWrapper tagWrapper);
 
         /// <summary>
         /// 删除标签
         /// </summary>
         /// <param name="tagEntry"></param>
         /// <returns></returns>
-        Task<ResponseModelBase> DeleteTagAsync(Tag tagEntry);
+        Task<ResponseModelBase> DeleteTagAsync(TagWrapper tagWrapper);
 
         /// <summary>
         /// 获取公众号已创建的标签
@@ -55,6 +55,6 @@ namespace IceCoffee.WeChatSDK.MP.APIs
         /// </summary>
         /// <param name="tagEntry"></param>
         /// <returns></returns>
-        Task<ResponseModelBase> UpdateTagAsync(Tag tagEntry);
+        Task<ResponseModelBase> UpdateTagAsync(TagWrapper tagWrapper);
     }
 }

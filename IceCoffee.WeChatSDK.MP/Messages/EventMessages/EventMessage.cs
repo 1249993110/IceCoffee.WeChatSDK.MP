@@ -1,4 +1,4 @@
-﻿using IceCoffee.WeChatSDK.MP.Messages.Primitives;
+﻿
 using System;
 using System.Collections.Generic;
 using System.Text;

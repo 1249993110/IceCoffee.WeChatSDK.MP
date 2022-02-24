@@ -26,6 +26,6 @@ namespace IceCoffee.WeChatSDK.MP.APIs
         /// 获取 jsapi_ticket
         /// </summary>
         /// <returns></returns>
-        Task<JsApiTicket> GetJsApiTicketAsync()
+        Task<JsApiTicket> GetJsApiTicketAsync();
     }
 }
