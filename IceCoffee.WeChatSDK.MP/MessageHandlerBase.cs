@@ -110,19 +110,19 @@ namespace IceCoffee.WeChatSDK.MP
             MessageBase responseMessage = null;
 
             // 事件消息
-            if (msgType == ExportedConstants.MsgType.Event)
+            if (msgType == Constants.MsgType.Event)
             {
                 string eventType = rootElement.Element("Event").Value;
                 switch (eventType)
                 {
-                    case ExportedConstants.Event.Subscribe:
+                    case Constants.Event.Subscribe:
                         {
                             var requestMessage = MessageSerializer<FollowingUnfollowingMessage>.Deserialize(xDocument);
                             _messageBase = requestMessage;
                             responseMessage = await OnEvent_SubscribeRequestAsync(requestMessage);
                             break;
                         }
-                    case ExportedConstants.Event.Unsubscribe:
+                    case Constants.Event.Unsubscribe:
                         {
                             var requestMessage = MessageSerializer<FollowingUnfollowingMessage>.Deserialize(xDocument);
                             _messageBase = requestMessage;
@@ -138,7 +138,7 @@ namespace IceCoffee.WeChatSDK.MP
                         }
                 }
             }
-            else if (msgType == ExportedConstants.MsgType.Text)
+            else if (msgType == Constants.MsgType.Text)
             {
                 var requestMessage = MessageSerializer<TextMessage>.Deserialize(xDocument);
                 _messageBase = requestMessage;
@@ -203,11 +203,11 @@ namespace IceCoffee.WeChatSDK.MP
 
             if (message is TextMessage textMessage)
             {
-                textMessage.MsgType = ExportedConstants.MsgType.Text;
+                textMessage.MsgType = Constants.MsgType.Text;
             }
             else if (message is EventMessage eventMessage)
             {
-                eventMessage.MsgType = ExportedConstants.MsgType.Event;
+                eventMessage.MsgType = Constants.MsgType.Event;
             }
 
             return message;

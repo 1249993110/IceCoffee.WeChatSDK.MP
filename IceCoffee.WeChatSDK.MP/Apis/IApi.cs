@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IceCoffee.WeChatSDK.MP.Apis
 {
-    internal class PayApi
+    public interface IApi
     {
     }
 }

@@ -2,9 +2,9 @@
 using IceCoffee.WeChatSDK.MP.Models.TagModels;
 using System.Threading.Tasks;
 
-namespace IceCoffee.WeChatSDK.MP.APIs
+namespace IceCoffee.WeChatSDK.MP.Apis
 {
-    public interface IUserManagementApi
+    public interface IUserManagementApi : IApi
     {
         /// <summary>
         /// 批量为用户打标签

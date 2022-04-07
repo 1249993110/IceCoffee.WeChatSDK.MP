@@ -6,7 +6,7 @@ using System.Text;
 
 namespace IceCoffee.WeChatSDK.MP
 {
-    internal static class Helper
+    public static class Helper
     {
         /// <summary>
         /// 进行sha1加密
@@ -46,10 +46,21 @@ namespace IceCoffee.WeChatSDK.MP
             }
 
             string[] strParameters = new string[] { token, timestamp, nonce };
-            // 排序数组
-            Array.Sort(strParameters);
-            string strSignature = Sha1Encrypt(string.Join(string.Empty, strParameters));
+            string strSignature = GenerateSignature(strParameters);
             return strSignature == signature;
+        }
+
+        /// <summary>
+        /// 生成签名
+        /// </summary>
+        /// <param name="array"></param>
+        /// <param name="separator"></param>
+        /// <returns></returns>
+        public static string GenerateSignature(string[] array, string separator = "")
+        {
+            // 排序数组
+            Array.Sort(array);
+            return Sha1Encrypt(string.Join(separator, array));
         }
     }
 }

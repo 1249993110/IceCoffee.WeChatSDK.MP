@@ -9,7 +9,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IceCoffee.WeChatSDK.MP.APIs
+namespace IceCoffee.WeChatSDK.MP.Apis
 {
     /// <summary>
     /// 基础支持接口

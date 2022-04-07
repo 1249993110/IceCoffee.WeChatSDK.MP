@@ -14,12 +14,10 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace IceCoffee.WeChatSDK.MP.APIs
+namespace IceCoffee.WeChatSDK.MP.Apis
 {
-    public abstract class ApiBase
+    public abstract class ApiBase : IApi
     {
-        internal static readonly string HttpClientName = typeof(ApiBase).Assembly.FullName;
-
         private readonly WeChatMpOptions _options;
         private readonly IMemoryCache _memoryCache;
         private readonly IHttpClientFactory _clientFactory;
@@ -39,7 +37,7 @@ namespace IceCoffee.WeChatSDK.MP.APIs
         {
         }
 
-        protected virtual HttpClient HttpClient => _clientFactory.CreateClient(HttpClientName);
+        protected virtual HttpClient HttpClient => _clientFactory.CreateClient(Assembly.GetExecutingAssembly().FullName);
 
         /// <summary>
         /// 将object转换为查询参数附加到url后
@@ -47,7 +45,7 @@ namespace IceCoffee.WeChatSDK.MP.APIs
         /// <param name="url"></param>
         /// <param name="obj"></param>
         /// <returns></returns>
-        protected static string AttachQueryString(string url, object obj)
+        protected virtual string AttachQueryString(string url, object obj)
         {
             try
             {
@@ -77,7 +75,7 @@ namespace IceCoffee.WeChatSDK.MP.APIs
             }
         }
 
-        protected static string Serialize(object obj)
+        protected virtual string Serialize(object obj)
         {
             return JsonSerializer.Serialize(obj, new JsonSerializerOptions()
             {

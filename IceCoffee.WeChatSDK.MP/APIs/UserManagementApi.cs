@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using IceCoffee.WeChatSDK.MP.Models;
 using IceCoffee.WeChatSDK.MP.Models.TagModels;
 
-namespace IceCoffee.WeChatSDK.MP.APIs
+namespace IceCoffee.WeChatSDK.MP.Apis
 {
     public class UserManagementApi : BasicApi, IUserManagementApi
     {

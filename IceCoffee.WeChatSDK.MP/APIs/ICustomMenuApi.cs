@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IceCoffee.WeChatSDK.MP.APIs
+namespace IceCoffee.WeChatSDK.MP.Apis
 {
-    public interface ICustomMenuApi
+    public interface ICustomMenuApi : IApi
     {
         /// <summary>
         /// 创建自定义菜单

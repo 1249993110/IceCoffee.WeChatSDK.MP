@@ -6,9 +6,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Configuration;
-using IceCoffee.WeChatSDK.MP.APIs;
+using IceCoffee.WeChatSDK.MP.Apis;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using System.Net.Http.Headers;
+using System.Reflection;
 
 namespace IceCoffee.WeChatSDK.MP.Extensions
 {
@@ -23,10 +24,13 @@ namespace IceCoffee.WeChatSDK.MP.Extensions
         /// <typeparam name="TMessageHandler"></typeparam>
         /// <param name="services"></param>
         /// <param name="configure"></param>
+        /// <param name="optionsName"></param>
+        /// <param name="autoRegisterApi"></param>
         public static IServiceCollection AddWeChatMessageHandler<TMessageHandler>(this IServiceCollection services,
-            Action<WeChatMpOptions> configure, string optionsName = null) where TMessageHandler : MessageHandlerBase
+            Action<WeChatMpOptions> configure, string optionsName = null, bool autoRegisterApi = true) where TMessageHandler : MessageHandlerBase
         {
-            return services.AddWeChatMessageHandler<TMessageHandler>(new ConfigureWeChatMpOptions(optionsName, typeof(TMessageHandler), configure));
+            return services.AddWeChatMessageHandler<TMessageHandler>(
+                new ConfigureWeChatMpOptions(optionsName, typeof(TMessageHandler), configure), autoRegisterApi);
         }
 
         /// <summary>
@@ -34,15 +38,18 @@ namespace IceCoffee.WeChatSDK.MP.Extensions
         /// </summary>
         /// <typeparam name="TMessageHandler"></typeparam>
         /// <param name="services"></param>
-        /// <param name="config">sub-section</param>
+        /// <param name="configSection">sub-section</param>
+        /// <param name="optionsName"></param>
+        /// <param name="autoRegisterApi"></param>
         public static IServiceCollection AddWeChatMessageHandler<TMessageHandler>(this IServiceCollection services,
-           IConfiguration config, string optionsName = null) where TMessageHandler : MessageHandlerBase
+           IConfigurationSection configSection, string optionsName = null, bool autoRegisterApi = true) where TMessageHandler : MessageHandlerBase
         {
-            return services.AddWeChatMessageHandler<TMessageHandler>(new ConfigureWeChatMpOptions(optionsName, typeof(TMessageHandler), config));
+            return services.AddWeChatMessageHandler<TMessageHandler>(
+                new ConfigureWeChatMpOptions(optionsName, typeof(TMessageHandler), configSection), autoRegisterApi);
         }
 
         private static IServiceCollection AddWeChatMessageHandler<TMessageHandler>(this IServiceCollection services,
-           ConfigureWeChatMpOptions configureWeChatMpOptions) where TMessageHandler : MessageHandlerBase
+           ConfigureWeChatMpOptions configureWeChatMpOptions, bool autoRegisterApi) where TMessageHandler : MessageHandlerBase
         {
             try
             {
@@ -56,16 +63,21 @@ namespace IceCoffee.WeChatSDK.MP.Extensions
                 services.AddMemoryCache();
                 services.TryAddScoped<TMessageHandler>();
 
-                var assembly = typeof(ApiBase).Assembly;
-                foreach (var item in assembly.GetExportedTypes().Where(t => t.IsSubclassOf(typeof(ApiBase))))
+                var assembly = Assembly.GetExecutingAssembly();
+
+                if (autoRegisterApi)
                 {
-                    var interfaceType = item.GetInterfaces().First();
-                    services.TryAddSingleton(item);
+                    foreach (var item in assembly.GetExportedTypes().Where(t => t.IsSubclassOf(typeof(ApiBase))))
+                    {
+                        var interfaceType = item.GetInterfaces().First(t => t != typeof(IApi));
+                        services.TryAddSingleton(interfaceType, item);
+                    }
                 }
 
-                services.AddHttpClient(ApiBase.HttpClientName, httpClient =>
+                services.AddHttpClient(assembly.FullName, httpClient =>
                 {
-                    httpClient.Timeout = TimeSpan.FromSeconds(2);
+                    httpClient.Timeout = TimeSpan.FromSeconds(10);
+                    httpClient.DefaultRequestHeaders.Accept.Clear();
                     httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                     httpClient.BaseAddress = new Uri("https://api.weixin.qq.com/");
                 });

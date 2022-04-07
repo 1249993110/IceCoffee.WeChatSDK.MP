@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IceCoffee.WeChatSDK.MP.APIs
+namespace IceCoffee.WeChatSDK.MP.Apis
 {
-    public interface IBasicApi
+    public interface IBasicApi : IApi
     {
         /// <summary>
         /// 通过 code 获取网页授权 access_token
