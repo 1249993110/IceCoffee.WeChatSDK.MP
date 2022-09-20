@@ -9,7 +9,7 @@ namespace IceCoffee.WeChatSDK.MP
     public static class Helper
     {
         /// <summary>
-        /// 进行sha1加密
+        /// 进行Sha1加密
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
