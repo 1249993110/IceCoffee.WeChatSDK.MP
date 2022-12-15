@@ -1,17 +1,6 @@
 ﻿using IceCoffee.WeChatSDK.MP.Messages;
-
 using System;
-using System.Collections;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.Serialization;
 using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
@@ -48,7 +37,7 @@ namespace IceCoffee.WeChatSDK.MP.Serialization
                 settings.Async = true;
 
                 XmlWriter writer = XmlWriter.Create(stringBuilder, settings);
-                
+
                 XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
                 ns.Add(string.Empty, string.Empty);// 去除 xmlns:xsd
 
