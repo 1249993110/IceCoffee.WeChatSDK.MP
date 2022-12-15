@@ -34,10 +34,23 @@ namespace IceCoffee.WeChatSDK.MP.Apis
             return base.GetAsync<AccessTokenWrapper>(uri);
         }
 
+        private static string _key1 = Guid.NewGuid().ToString();
+        private static string _key2 = Guid.NewGuid().ToString();
+
+        private static string GetAccessTokenCacheKey(string weChatAppId)
+        {
+            return _key1 + weChatAppId;
+        }
+
+        private static string GetJsApiTicketCacheKey(string weChatAppId)
+        {
+            return _key2 + weChatAppId;
+        }
+
         public async Task<AccessTokenWrapper> GetAccessTokenAsync()
         {
             // 命名空间:类名:目标
-            string key = $"IceCoffee.WeChatSDK.MP:BasicApi:{Options.WeChatAppId}:AccessToken";
+            string key = GetAccessTokenCacheKey(Options.WeChatAppId);
             if (MemoryCache.TryGetValue(key, out AccessTokenWrapper cacheEntry) == false)
             {
 
@@ -61,7 +74,7 @@ namespace IceCoffee.WeChatSDK.MP.Apis
         public async Task<JsApiTicket> GetJsApiTicketAsync()
         {
             // 命名空间:类名:目标
-            string key = $"IceCoffee.WeChatSDK.MP:CommonApi:{Options.WeChatAppId}:JsApiTicket";
+            string key = GetJsApiTicketCacheKey(Options.WeChatAppId);
             if (MemoryCache.TryGetValue(key, out JsApiTicket cacheEntry) == false)
             {
                 string accessToken = (await GetAccessTokenAsync()).AccessToken;

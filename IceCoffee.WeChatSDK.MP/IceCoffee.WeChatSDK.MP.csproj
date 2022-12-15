@@ -9,18 +9,19 @@
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 		<NoWarn>$(NoWarn);1591</NoWarn>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageProjectUrl>https://github.com/1249993110/IceCoffee.WeChatSDK.MP</PackageProjectUrl>
 		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
 		<Product>IceCoffee</Product>
 		<RepositoryUrl>https://github.com/1249993110/IceCoffee.WeChatSDK.MP</RepositoryUrl>
 		<TargetFrameworks>net6.0;netcoreapp3.1</TargetFrameworks>
-		<Version>1.0.0.8</Version>
+		<Version>1.0.1.0</Version>
 	</PropertyGroup>
 
 
 	<ItemGroup>
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />
-		<PackageReference Include="IceCoffee.Common" Version="1.0.2.2" />
+		<PackageReference Include="IceCoffee.Common" Version="1.0.3" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -28,7 +29,9 @@
 			<Pack>True</Pack>
 			<PackagePath></PackagePath>
 		</None>
-
-		<None Include="..\README.md" />
+		<None Include="..\README.md">
+			<Pack>True</Pack>
+			<PackagePath></PackagePath>
+		</None>
 	</ItemGroup>
 </Project>
