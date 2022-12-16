@@ -2,12 +2,6 @@
 using IceCoffee.WeChatSDK.MP.Options;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IceCoffee.WeChatSDK.MP.Apis
 {
@@ -16,12 +10,12 @@ namespace IceCoffee.WeChatSDK.MP.Apis
     /// </summary>
     public class BasicApi : ApiBase, IBasicApi
     {
-        public BasicApi(WeChatMpOptions options, IMemoryCache memoryCache, IHttpClientFactory clientFactory) 
+        public BasicApi(WeChatMpOpenApiOptions options, IMemoryCache memoryCache, IHttpClientFactory clientFactory)
             : base(options, memoryCache, clientFactory)
         {
         }
 
-        public BasicApi(IOptions<WeChatMpOptions> options, IMemoryCache memoryCache, IHttpClientFactory clientFactory)
+        public BasicApi(IOptions<WeChatMpOpenApiOptions> options, IMemoryCache memoryCache, IHttpClientFactory clientFactory)
             : base(options, memoryCache, clientFactory)
         {
         }
@@ -34,8 +28,8 @@ namespace IceCoffee.WeChatSDK.MP.Apis
             return base.GetAsync<AccessTokenWrapper>(uri);
         }
 
-        private static string _key1 = Guid.NewGuid().ToString();
-        private static string _key2 = Guid.NewGuid().ToString();
+        private static readonly string _key1 = Guid.NewGuid().ToString();
+        private static readonly string _key2 = Guid.NewGuid().ToString();
 
         private static string GetAccessTokenCacheKey(string weChatAppId)
         {
@@ -53,7 +47,6 @@ namespace IceCoffee.WeChatSDK.MP.Apis
             string key = GetAccessTokenCacheKey(Options.WeChatAppId);
             if (MemoryCache.TryGetValue(key, out AccessTokenWrapper cacheEntry) == false)
             {
-
                 string uri = string.Format("/cgi-bin/token?grant_type=client_credential&appid={0}&secret={1}",
                     Options.WeChatAppId, Options.WeChatAppSecret);
 

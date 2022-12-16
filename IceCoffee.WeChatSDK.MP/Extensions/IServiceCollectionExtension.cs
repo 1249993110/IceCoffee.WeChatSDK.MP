@@ -18,38 +18,53 @@ namespace IceCoffee.WeChatSDK.MP.Extensions
     /// </summary>
     public static class IServiceCollectionExtension
     {
+        #region 添加微信公共号服务端消息处理器
         /// <summary>
-        /// 添加微信消息处理器
+        /// 添加微信公共号服务端消息处理器
         /// </summary>
-        /// <typeparam name="TMessageHandler"></typeparam>
-        /// <param name="services"></param>
-        /// <param name="configure"></param>
-        /// <param name="optionsName"></param>
-        /// <param name="autoRegisterApi"></param>
-        public static IServiceCollection AddWeChatMessageHandler<TMessageHandler>(this IServiceCollection services,
-            Action<WeChatMpOptions> configure, string optionsName = null, bool autoRegisterApi = true) where TMessageHandler : MessageHandlerBase
+        public static IServiceCollection AddWeChatMpServerMessageHandler<TMessageHandler>(
+            this IServiceCollection services, Action<WeChatMpServerOptions> configure)
+            where TMessageHandler : MessageHandlerBase
         {
-            return services.AddWeChatMessageHandler<TMessageHandler>(
-                new ConfigureWeChatMpOptions(optionsName, typeof(TMessageHandler), configure), autoRegisterApi);
+            return services.InternalAddWeChatMpServerMessageHandler<TMessageHandler>(
+                new ConfigureWeChatMpServerOptions(null, typeof(TMessageHandler), configure));
         }
 
         /// <summary>
-        /// 添加微信消息处理器
+        /// 添加微信公共号服务端消息处理器
         /// </summary>
-        /// <typeparam name="TMessageHandler"></typeparam>
-        /// <param name="services"></param>
-        /// <param name="configSection">sub-section</param>
-        /// <param name="optionsName"></param>
-        /// <param name="autoRegisterApi"></param>
-        public static IServiceCollection AddWeChatMessageHandler<TMessageHandler>(this IServiceCollection services,
-           IConfigurationSection configSection, string optionsName = null, bool autoRegisterApi = true) where TMessageHandler : MessageHandlerBase
+        public static IServiceCollection AddWeChatMpServerMessageHandler<TMessageHandler>(this IServiceCollection services,
+            string name, Action<WeChatMpServerOptions> configure)
+            where TMessageHandler : MessageHandlerBase
         {
-            return services.AddWeChatMessageHandler<TMessageHandler>(
-                new ConfigureWeChatMpOptions(optionsName, typeof(TMessageHandler), configSection), autoRegisterApi);
+            return services.InternalAddWeChatMpServerMessageHandler<TMessageHandler>(
+                new ConfigureWeChatMpServerOptions(name, typeof(TMessageHandler), configure));
         }
 
-        private static IServiceCollection AddWeChatMessageHandler<TMessageHandler>(this IServiceCollection services,
-           ConfigureWeChatMpOptions configureWeChatMpOptions, bool autoRegisterApi) where TMessageHandler : MessageHandlerBase
+        /// <summary>
+        /// 添加微信公共号服务端消息处理器
+        /// </summary>
+        public static IServiceCollection AddWeChatMpServerMessageHandler<TMessageHandler>(this IServiceCollection services,
+           IConfigurationSection configSection)
+            where TMessageHandler : MessageHandlerBase
+        {
+            return services.InternalAddWeChatMpServerMessageHandler<TMessageHandler>(
+                new ConfigureWeChatMpServerOptions(null, typeof(TMessageHandler), configSection));
+        }
+
+        /// <summary>
+        /// 添加微信公共号服务端消息处理器
+        /// </summary>
+        public static IServiceCollection AddWeChatMpServerMessageHandler<TMessageHandler>(this IServiceCollection services,
+           string name, IConfigurationSection configSection)
+           where TMessageHandler : MessageHandlerBase
+        {
+            return services.InternalAddWeChatMpServerMessageHandler<TMessageHandler>(
+                new ConfigureWeChatMpServerOptions(name, typeof(TMessageHandler), configSection));
+        }
+
+        private static IServiceCollection InternalAddWeChatMpServerMessageHandler<TMessageHandler>(this IServiceCollection services,
+           ConfigureWeChatMpServerOptions configureWeChatMpOptions) where TMessageHandler : MessageHandlerBase
         {
             try
             {
@@ -59,35 +74,65 @@ namespace IceCoffee.WeChatSDK.MP.Extensions
                 }
 
                 services.ConfigureOptions(configureWeChatMpOptions);
-                // 内部已实现 TryAdd
-                services.AddMemoryCache();
                 services.TryAddScoped<TMessageHandler>();
-
-                var assembly = Assembly.GetExecutingAssembly();
-
-                if (autoRegisterApi)
-                {
-                    foreach (var item in assembly.GetExportedTypes().Where(t => t.IsSubclassOf(typeof(ApiBase))))
-                    {
-                        var interfaceType = item.GetInterfaces().First(t => t != typeof(IApi));
-                        services.TryAddSingleton(interfaceType, item);
-                    }
-                }
-
-                services.AddHttpClient(assembly.FullName, httpClient =>
-                {
-                    httpClient.Timeout = TimeSpan.FromSeconds(10);
-                    httpClient.DefaultRequestHeaders.Accept.Clear();
-                    httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                    httpClient.BaseAddress = new Uri("https://api.weixin.qq.com/");
-                });
-
                 return services;
             }
             catch (Exception ex)
             {
-                throw new Exception("Error in IServiceCollectionExtension.AddWeChatMessageHandler", ex);
+                throw new Exception("Error in IServiceCollectionExtension.AddWeChatMpServerMessageHandler", ex);
             }
+        }
+
+        #endregion
+
+        public static IServiceCollection AddWeChatMpOpenApi(this IServiceCollection services, Action<WeChatMpOpenApiOptions> configure)
+        {
+            services.Configure(configure);
+            services.InternalAddWeChatMpOpenApi();
+            return services;
+        }
+
+        public static IServiceCollection AddWeChatMpOpenApi(this IServiceCollection services, string name, Action<WeChatMpOpenApiOptions> configure)
+        {
+            services.Configure(name, configure);
+            services.InternalAddWeChatMpOpenApi();
+            return services;
+        }
+
+        public static IServiceCollection AddWeChatMpOpenApi(this IServiceCollection services, IConfigurationSection configSection)
+        {
+            services.Configure<WeChatMpOpenApiOptions>(configSection);
+            services.InternalAddWeChatMpOpenApi();
+            return services;
+        }
+
+        public static IServiceCollection AddWeChatMpOpenApi(this IServiceCollection services, string name, IConfigurationSection configSection)
+        {
+            services.Configure<WeChatMpOpenApiOptions>(name, configSection);
+            services.InternalAddWeChatMpOpenApi();
+            return services;
+        }
+
+        private static IServiceCollection InternalAddWeChatMpOpenApi(this IServiceCollection services)
+        {
+            services.AddMemoryCache();
+
+            var assembly = Assembly.GetExecutingAssembly();
+            foreach (var item in assembly.GetExportedTypes().Where(t => t.IsSubclassOf(typeof(ApiBase))))
+            {
+                var interfaceType = item.GetInterfaces().First(t => t != typeof(IApi));
+                services.TryAddSingleton(interfaceType, item);
+            }
+
+            services.AddHttpClient(assembly.FullName, httpClient =>
+            {
+                httpClient.Timeout = TimeSpan.FromSeconds(10);
+                httpClient.DefaultRequestHeaders.Accept.Clear();
+                httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                httpClient.BaseAddress = new Uri("https://api.weixin.qq.com/");
+            });
+
+            return services;
         }
     }
 }

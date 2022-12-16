@@ -7,7 +7,9 @@
 		<Description>微信公众号软件开发工具包</Description>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+		<ImplicitUsings>enable</ImplicitUsings>
 		<NoWarn>$(NoWarn);1591</NoWarn>
+		<Nullable>disable</Nullable>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageProjectUrl>https://github.com/1249993110/IceCoffee.WeChatSDK.MP</PackageProjectUrl>
@@ -15,9 +17,9 @@
 		<Product>IceCoffee</Product>
 		<RepositoryUrl>https://github.com/1249993110/IceCoffee.WeChatSDK.MP</RepositoryUrl>
 		<TargetFrameworks>net6.0;netcoreapp3.1</TargetFrameworks>
-		<Version>1.0.1.0</Version>
+		<Version>1.0.1.1</Version>
+		<LangVersion>10.0</LangVersion>
 	</PropertyGroup>
-
 
 	<ItemGroup>
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />

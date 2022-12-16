@@ -15,12 +15,12 @@ namespace IceCoffee.WeChatSDK.MP.Apis
 {
     public class UserManagementApi : BasicApi, IUserManagementApi
     {
-        public UserManagementApi(WeChatMpOptions options, IMemoryCache memoryCache, IHttpClientFactory clientFactory)
+        public UserManagementApi(WeChatMpOpenApiOptions options, IMemoryCache memoryCache, IHttpClientFactory clientFactory)
             : base(options, memoryCache, clientFactory)
         {
         }
 
-        public UserManagementApi(IOptions<WeChatMpOptions> options, IMemoryCache memoryCache, IHttpClientFactory clientFactory)
+        public UserManagementApi(IOptions<WeChatMpOpenApiOptions> options, IMemoryCache memoryCache, IHttpClientFactory clientFactory)
             : base(options, memoryCache, clientFactory)
         {
         }

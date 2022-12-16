@@ -2,37 +2,31 @@
 using IceCoffee.WeChatSDK.MP.Options;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Reflection;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace IceCoffee.WeChatSDK.MP.Apis
 {
     public abstract class ApiBase : IApi
     {
-        private readonly WeChatMpOptions _options;
+        private readonly WeChatMpOpenApiOptions _options;
         private readonly IMemoryCache _memoryCache;
         private readonly IHttpClientFactory _clientFactory;
-        
-        protected WeChatMpOptions Options => _options;
+
+        protected WeChatMpOpenApiOptions Options => _options;
         protected IMemoryCache MemoryCache => _memoryCache;
 
-        public ApiBase(WeChatMpOptions options, IMemoryCache memoryCache, IHttpClientFactory clientFactory)
+        public ApiBase(WeChatMpOpenApiOptions options, IMemoryCache memoryCache, IHttpClientFactory clientFactory)
         {
             _options = options;
             _memoryCache = memoryCache;
             _clientFactory = clientFactory;
         }
 
-        public ApiBase(IOptions<WeChatMpOptions> options, IMemoryCache memoryCache, IHttpClientFactory clientFactory)
+        public ApiBase(IOptions<WeChatMpOpenApiOptions> options, IMemoryCache memoryCache, IHttpClientFactory clientFactory)
             : this(options.Value, memoryCache, clientFactory)
         {
         }

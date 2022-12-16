@@ -22,19 +22,19 @@ namespace IceCoffee.WeChatSDK.MP
         private MessageBase _messageBase;
 
         private HttpContext _httpContext;
-        private WeChatMpOptions _weChatMpOptions;
+        private WeChatMpServerOptions _weChatMpOptions;
         private Func<MessageBase, string> _serializeDelegate;
 
-        protected readonly ILogger<MessageHandlerBase> logger;
+        protected readonly ILogger<MessageHandlerBase> Logger;
         protected HttpContext HttpContext => _httpContext;
-        public WeChatMpOptions WeChatMpOptions => _weChatMpOptions;
+        public WeChatMpServerOptions WeChatMpOptions => _weChatMpOptions;
 
         public MessageHandlerBase(ILogger<MessageHandlerBase> logger)
         {
-            this.logger = logger;
+            this.Logger = logger;
         }
 
-        public virtual async Task RunAsync(HttpContext httpContext, WeChatMpOptions weChatMpOptions)
+        public virtual async Task RunAsync(HttpContext httpContext, WeChatMpServerOptions weChatMpOptions)
         {
             _httpContext = httpContext;
             _weChatMpOptions = weChatMpOptions;
@@ -59,7 +59,7 @@ namespace IceCoffee.WeChatSDK.MP
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "运行微信消息处理器出错");
+                Logger.LogError(ex, "运行微信消息处理器出错");
                 await _httpContext.Response.WriteAsync(ex.Message);
             }
         }

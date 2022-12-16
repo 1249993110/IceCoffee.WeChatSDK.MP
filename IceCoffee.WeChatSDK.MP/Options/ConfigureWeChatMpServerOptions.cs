@@ -1,27 +1,25 @@
 ﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
-using System;
-using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace IceCoffee.WeChatSDK.MP.Options
 {
-    public class ConfigureWeChatMpOptions : ConfigureNamedOptions<WeChatMpOptions>
+    public class ConfigureWeChatMpServerOptions : ConfigureNamedOptions<WeChatMpServerOptions>
     {
         private readonly Type _messageHandlerType;
 
-        public ConfigureWeChatMpOptions(string optionsName, Type messageHandlerType, Action<WeChatMpOptions> action) 
+        public ConfigureWeChatMpServerOptions(string optionsName, Type messageHandlerType, Action<WeChatMpServerOptions> action)
             : base(optionsName, action)
         {
             _messageHandlerType = messageHandlerType;
         }
 
-        public ConfigureWeChatMpOptions(string optionsName, Type messageHandlerType, IConfiguration config)
+        public ConfigureWeChatMpServerOptions(string optionsName, Type messageHandlerType, IConfiguration config)
             : this(optionsName, messageHandlerType, config, null)
         {
         }
 
-        public ConfigureWeChatMpOptions(string optionsName, Type messageHandlerType, IConfiguration config, Action<BinderOptions> configureBinder) 
+        public ConfigureWeChatMpServerOptions(string optionsName, Type messageHandlerType, IConfiguration config, Action<BinderOptions> configureBinder)
             : base(optionsName, options => config.Bind(options, configureBinder))
         {
             if (config == null)
@@ -32,7 +30,7 @@ namespace IceCoffee.WeChatSDK.MP.Options
             _messageHandlerType = messageHandlerType;
         }
 
-        public override void Configure(string name, WeChatMpOptions options)
+        public override void Configure(string name, WeChatMpServerOptions options)
         {
             if (options == null)
             {
