@@ -30,7 +30,10 @@ namespace IceCoffee.WeChatSDK.MP
                 var options = _optionsMonitor.Get(optionsName);
                 api = (T)Activator.CreateInstance(type, new object[] { options, _memoryCache, _clientFactory });
 
-                _cache[key] = api;
+                lock (_cache)
+                {
+                    _cache[key] = api;
+                }
             }
 
             return (T)api;
