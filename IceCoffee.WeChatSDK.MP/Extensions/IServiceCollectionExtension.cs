@@ -135,9 +135,16 @@ namespace IceCoffee.WeChatSDK.MP.Extensions
             return services;
         }
 
+        public static IServiceCollection AddApiFactory(this IServiceCollection services)
+        {
+            services.TryAddSingleton<ApiFactory>();
+            return services;
+        }
+
         public static IServiceCollection AddApiFactory(this IServiceCollection services, Action<ApiFactoryOptions> configure)
         {
             services.Configure(configure);
+            services.TryAddSingleton<ApiFactory>();
             return services;
         }
     }
