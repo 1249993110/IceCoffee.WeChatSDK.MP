@@ -116,6 +116,7 @@ namespace IceCoffee.WeChatSDK.MP.Extensions
         private static IServiceCollection InternalAddWeChatMpOpenApi(this IServiceCollection services)
         {
             services.AddMemoryCache();
+            services.InternalAddHttpClient();
 
             var assembly = Assembly.GetExecutingAssembly();
             foreach (var item in assembly.GetExportedTypes().Where(t => t.IsSubclassOf(typeof(ApiBase))))
@@ -123,27 +124,26 @@ namespace IceCoffee.WeChatSDK.MP.Extensions
                 var interfaceType = item.GetInterfaces().First(t => t != typeof(IApi));
                 services.TryAddSingleton(interfaceType, item);
             }
+            
+            return services;
+        }
 
-            services.AddHttpClient(assembly.FullName, httpClient =>
+        private static IServiceCollection InternalAddHttpClient(this IServiceCollection services)
+        {
+            services.AddHttpClient(Assembly.GetExecutingAssembly().FullName, httpClient =>
             {
                 httpClient.Timeout = TimeSpan.FromSeconds(10);
                 httpClient.DefaultRequestHeaders.Accept.Clear();
                 httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 httpClient.BaseAddress = new Uri("https://api.weixin.qq.com/");
             });
-
             return services;
         }
 
         public static IServiceCollection AddApiFactory(this IServiceCollection services)
         {
-            services.TryAddSingleton<ApiFactory>();
-            return services;
-        }
-
-        public static IServiceCollection AddApiFactory(this IServiceCollection services, Action<ApiFactoryOptions> configure)
-        {
-            services.Configure(configure);
+            services.AddMemoryCache();
+            services.InternalAddHttpClient();
             services.TryAddSingleton<ApiFactory>();
             return services;
         }
