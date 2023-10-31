@@ -73,11 +73,8 @@ namespace IceCoffee.WeChatSDK.MP.Apis
         {
             return JsonSerializer.Serialize(obj, new JsonSerializerOptions()
             {
-#if NETCOREAPP3_1
-                IgnoreNullValues = true,
-#else
+
                 DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
-#endif
                 Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping// 不进行 unicode编码，微信不支持/u....格式
             });
         }
