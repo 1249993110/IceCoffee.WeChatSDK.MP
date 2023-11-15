@@ -26,14 +26,14 @@ namespace IceCoffee.WeChatSDK.MP.Apis
         /// <summary>
         /// 创建标签
         /// </summary>
-        /// <param name="tagEntry"></param>
+        /// <param name="tagWrapper"></param>
         /// <returns></returns>
         Task<TagWrapper> CreateTagAsync(TagWrapper tagWrapper);
 
         /// <summary>
         /// 删除标签
         /// </summary>
-        /// <param name="tagEntry"></param>
+        /// <param name="tagWrapper"></param>
         /// <returns></returns>
         Task<ResponseModelBase> DeleteTagAsync(TagWrapper tagWrapper);
 
@@ -53,7 +53,7 @@ namespace IceCoffee.WeChatSDK.MP.Apis
         /// <summary>
         /// 编辑标签
         /// </summary>
-        /// <param name="tagEntry"></param>
+        /// <param name="tagWrapper"></param>
         /// <returns></returns>
         Task<ResponseModelBase> UpdateTagAsync(TagWrapper tagWrapper);
     }

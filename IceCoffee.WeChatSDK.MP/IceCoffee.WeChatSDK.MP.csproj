@@ -19,14 +19,14 @@
 		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
 		<Product>IceCoffee</Product>
 		<RepositoryUrl>https://github.com/1249993110/IceCoffee.WeChatSDK.MP</RepositoryUrl>
-		<TargetFrameworks>net6.0</TargetFrameworks>
-		<Version>1.0.1.10</Version>
+		<TargetFrameworks>net8.0;net6.0</TargetFrameworks>
+		<Version>1.0.2</Version>
 		<LangVersion>10.0</LangVersion>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />
-		<PackageReference Include="IceCoffee.Common" Version="1.0.3.1" />
+		<PackageReference Include="IceCoffee.Common" Version="1.0.5" />
 	</ItemGroup>
 
 	<ItemGroup>
