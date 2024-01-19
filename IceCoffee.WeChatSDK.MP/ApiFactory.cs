@@ -54,13 +54,12 @@ namespace IceCoffee.WeChatSDK.MP
         /// 
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="name"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        public T GetIApi<T>(string name, WeChatMpOpenApiOptions options) where T : IApi
+        public T GetIApi<T>(WeChatMpOpenApiOptions options) where T : IApi
         {
             Type type = typeof(T);
-            string key = name + ":" + type.Name;
+            string key = options.WeChatAppId + ":" + type.Name;
 
             if (_cache.TryGetValue(key, out var api) == false)
             {
