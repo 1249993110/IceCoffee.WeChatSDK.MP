@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace IceCoffee.WeChatSDK.MP.Apis
 {
-    public interface ITemplateMessageApi
+    public interface ITemplateMessageApi : IApi
     {
         /// <summary>
         /// 发送模板消息
